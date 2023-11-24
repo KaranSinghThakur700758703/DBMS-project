@@ -30,13 +30,16 @@ const authCtrl = {
       const passwordHash = await bcrypt.hash(password, 12);
 
       const newUser = new Users({
-        fullname, 
-        username: newUserName, 
+        fullname,
+        username: newUserName,
         email,
         password: passwordHash,
         gender,
       });
 
+      await newUser.save();
+
+      // Set cookies after user is saved
       const access_token = createAccessToken({ id: newUser._id });
       const refresh_token = createRefreshToken({ id: newUser._id });
 
@@ -46,6 +49,7 @@ const authCtrl = {
         maxAge: 30 * 24 * 60 * 60 * 1000, //validity of 30 days
       });
 
+      // Send the response after setting cookies
       res.json({
         msg: "Registered Successfully!",
         access_token,
@@ -54,14 +58,11 @@ const authCtrl = {
           password: "",
         },
       });
-
-      await newUser.save();
-
-      res.json({ msg: "registered" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
   },
+  // ... (other functions remain unchanged)
 
   changePassword: async (req, res) => {
     try {

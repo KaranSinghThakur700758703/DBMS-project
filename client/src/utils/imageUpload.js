@@ -1,7 +1,3 @@
-import {CLOUD_NAME} from '../utils/config'
-import {PRESET_KEY} from '../utils/config'
-import {CLOUDINARY_URL} from '../utils/config'
-
 export const checkImage = (file) => {
     let err = "";
     if(!file){
@@ -32,10 +28,10 @@ export const imageUpload = async (images) => {
         }
 
         
-        formData.append("upload_preset", PRESET_KEY);
-        formData.append("cloud_name", CLOUD_NAME);
+        formData.append("upload_preset", "chat-app");
+        formData.append("cloud_name", "dpo25fsfu");
 
-        const res = await fetch(CLOUDINARY_URL, {
+        const res = await fetch("https://api.cloudinary.com/v1_1/dpo25fsfu/image/upload", {
             method: "POST",
             body: formData
         })
